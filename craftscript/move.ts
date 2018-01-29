@@ -5,7 +5,7 @@ export function move() {
     context.checkArgs(1, 5, '<front> [left] [top] [loop] [interval]');
 
     const d_flont = lib.yaw_to_v(player.getYaw());
-    const d_left = lib.rot_l(d_flont);
+    const d_left = lib.rot_z(d_flont, 1);
     const df = d_flont.scalar(+argv[1]);
     const dl = d_left.scalar(+argv[2]);
     const d = df.add(dl).add([0, 0, +argv[3]]);
