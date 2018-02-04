@@ -413,3 +413,31 @@ function bezier3_interpolate_arc(p0, p1, o) {
     return bezier(controls);
 }
 exports.bezier3_interpolate_arc = bezier3_interpolate_arc;
+/** 2点間の距離 */
+function distance(p1, p2) {
+    return p2.sub(p1).length();
+}
+exports.distance = distance;
+/** 点と直線の距離 */
+function distance_lp(ray, p) {
+    var r1 = ray.d;
+    var r2 = p.sub(ray.c);
+    var cos = r1.ip(r2) / (r1.length() * r2.length()); // 余弦定理
+    var rad = Math.acos(cos);
+    var d = r1.length() * Math.sin(rad);
+    return d;
+}
+exports.distance_lp = distance_lp;
+/** 点と線分の距離 */
+function distance_sp(s1, s2, p) {
+    var d1 = s2.sub(s1);
+    var s1p = p.sub(s1);
+    if (d1.ip(s1p) < 0)
+        return s1p.length();
+    var d2 = s1.sub(s2);
+    var s2p = p.sub(s2);
+    if (d2.ip(s2p) < 0)
+        return s2p.length();
+    return distance_lp(ray(s1, d1), p);
+}
+exports.distance_sp = distance_sp;

@@ -41,13 +41,21 @@ export const phi = (1 + r5) / 2;
 // --------------------------------------------------------
 // 関数
 
+export function normalize_deg(deg: number): number {
+    deg %= 360;
+    if (deg < 0) deg += 360;
+    return deg;
+}
+
 /**
  * 度数法の角度を弧度法に変換
  * (0) -> 0
  * (180) -> 3.14
  * (360) -> 6.28
  */
-export const deg_to_rad = (deg: number): number => pi2 * deg / 360;
+export function deg_to_rad(deg: number): number {
+    return pi2 * normalize_deg(deg) / 360;
+}
 
 /** 
  * 弧度法の角度を度数法に変換
@@ -55,7 +63,9 @@ export const deg_to_rad = (deg: number): number => pi2 * deg / 360;
  * (3.14) -> 180
  * (6.28) -> 360
  */
-export const rad_to_deg = (rad: number): number => 360 * rad / pi2;
+export function rad_to_deg(rad: number): number {
+    return normalize_deg(360 * rad / pi2);
+}
 
 /**
  * Factorial - 階乗
@@ -215,3 +225,6 @@ export const cos_deg = compose_2f(deg_to_rad, Math.cos);
 /** タンジェント関数（引数は360で一周の度数法） */
 export const tan_deg = compose_2f(deg_to_rad, Math.tan);
 
+export function isin(min: number, max: number, n: number): boolean {
+    return min <= n && n <= max;
+}

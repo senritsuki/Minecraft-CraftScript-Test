@@ -34,20 +34,33 @@ exports.deg1 = exports.pi / 180;
 exports.phi = (1 + exports.r5) / 2;
 // --------------------------------------------------------
 // 関数
+function normalize_deg(deg) {
+    deg %= 360;
+    if (deg < 0)
+        deg += 360;
+    return deg;
+}
+exports.normalize_deg = normalize_deg;
 /**
  * 度数法の角度を弧度法に変換
  * (0) -> 0
  * (180) -> 3.14
  * (360) -> 6.28
  */
-exports.deg_to_rad = function (deg) { return exports.pi2 * deg / 360; };
+function deg_to_rad(deg) {
+    return exports.pi2 * normalize_deg(deg) / 360;
+}
+exports.deg_to_rad = deg_to_rad;
 /**
  * 弧度法の角度を度数法に変換
  * (0) -> 0
  * (3.14) -> 180
  * (6.28) -> 360
  */
-exports.rad_to_deg = function (rad) { return 360 * rad / exports.pi2; };
+function rad_to_deg(rad) {
+    return normalize_deg(360 * rad / exports.pi2);
+}
+exports.rad_to_deg = rad_to_deg;
 /**
  * Factorial - 階乗
  * (0) -> 1
@@ -197,8 +210,12 @@ var priv;
     };
 })(priv || (priv = {}));
 /** サイン関数（引数は360で一周の度数法） */
-exports.sin_deg = exports.compose_2f(exports.deg_to_rad, Math.sin);
+exports.sin_deg = exports.compose_2f(deg_to_rad, Math.sin);
 /** コサイン関数（引数は360で一周の度数法） */
-exports.cos_deg = exports.compose_2f(exports.deg_to_rad, Math.cos);
+exports.cos_deg = exports.compose_2f(deg_to_rad, Math.cos);
 /** タンジェント関数（引数は360で一周の度数法） */
-exports.tan_deg = exports.compose_2f(exports.deg_to_rad, Math.tan);
+exports.tan_deg = exports.compose_2f(deg_to_rad, Math.tan);
+function isin(min, max, n) {
+    return min <= n && n <= max;
+}
+exports.isin = isin;

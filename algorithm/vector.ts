@@ -311,6 +311,13 @@ export function polar_to_v2(r: number, rad: number): V2 {
     return new V2Impl(x, y);
 }
 
+/** v2 -> [radius, radian] */
+export function v2_to_polar(v: V2): [number, number] {
+    const r = v.length();
+    const rad = Math.atan2(v.y, v.x);
+    return [r, rad];
+}
+
 /**
  * 円柱座標系から直交座標系の3次元ベクトルを生成する
  * @param r     極形式のxy成分の長さ
@@ -327,6 +334,22 @@ export function polar_to_v3(r: number, rad: number, z: number): V3 {
     const y = r * Math.sin(rad);
     return new V3Impl(x, y, z);
 }
+
+/** v3 -> [radius, radian, z] */
+export function v3_to_polar(v: V3): [number, number, number] {
+    const r = v3_to_v2(v).length();
+    const rad = Math.atan2(v.y, v.x);
+    return [r, rad, v.z];
+}
+/** v3 -> [radius, radian_horizontal, radian_vertical] */
+export function v3_to_sphere(v: V3): [number, number, number] {
+    const r = v.length();
+    const r_h = v3_to_v2(v).length();
+    const rad_h = Math.atan2(v.y, v.x);
+    const rad_v = Math.atan2(v.z, r_h);
+    return [r, rad_h, rad_v];
+}
+
 
 /**
  * 球面座標系から直交座標系の3次元ベクトルを生成する

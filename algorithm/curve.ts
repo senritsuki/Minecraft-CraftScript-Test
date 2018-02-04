@@ -445,3 +445,30 @@ export function bezier3_interpolate_arc(p0: V3, p1: V3, o: V3): Curve3 {
     const controls = [p0, c0, c1, p1];
     return bezier(controls);
 }
+
+
+/** 2点間の距離 */
+export function distance<V extends vc.Vector<V>>(p1: V, p2: V): number {
+    return p2.sub(p1).length();
+}
+
+/** 点と直線の距離 */
+export function distance_lp<V extends vc.Vector<V>, R extends Ray<V>>(ray: R, p: V): number {
+    const r1 = ray.d;
+    const r2 = p.sub(ray.c);
+    const cos = r1.ip(r2) / (r1.length() * r2.length());    // 余弦定理
+    const rad = Math.acos(cos);
+    const d = r1.length() * Math.sin(rad);
+    return d;
+}
+
+/** 点と線分の距離 */
+export function distance_sp<V extends vc.Vector<V>>(s1: V, s2: V, p: V): number {
+    const d1 = s2.sub(s1);
+    const s1p = p.sub(s1);
+    if (d1.ip(s1p) < 0) return s1p.length();
+    const d2 = s1.sub(s2);
+    const s2p = p.sub(s2);
+    if (d2.ip(s2p) < 0) return s2p.length();
+    return distance_lp(ray(s1, d1), p);
+}

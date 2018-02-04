@@ -3,7 +3,6 @@ importPackage(Packages.com.sk89q.worldedit);
 
 /** 八角形の土台 */
 export function base() {
-
 }
 
 
